@@ -248,3 +248,6 @@ define_sanity_output.txt
 
 # Running OpenDream locally
 tgstation.json
+config/dbconfig.txt
+config/admins.txt
+config/config.txt
