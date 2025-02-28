@@ -53,6 +53,12 @@ jobs:
           upstream_sync_repo: Bubberstation/Bubberstation
           test_mode: ${{ inputs.sync_test_mode }}
 
+      # Get current date for PR title
+      - name: Get current date
+        if: steps.sync.outputs.has_new_commits == 'true'
+        run: |
+          echo "NOW=$(date +%d.%m.%Y)" >> $env:GITHUB_ENV
+
       # Add new step to create pull request when changes are found
       - name: Create Pull Request
         if: steps.sync.outputs.has_new_commits == 'true'
@@ -60,8 +66,8 @@ jobs:
         with:
           source_branch: "upstream-updates"
           destination_branch: "master"
-          pr_title: "[UPSTREAM UPDATE] ${{ format('{0:dd}.{0:MM}.{0:yyyy}', github.event.repository.pushed_at) }}"
-          pr_body: "Upstream update ${{ format('{0:dd}.{0:MM}.{0:yyyy}', github.event.repository.pushed_at) }}"
+          pr_title: "[UPSTREAM UPDATE] ${{ env.NOW }}"
+          pr_body: "Upstream update ${{ env.NOW }}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 5: Output results
